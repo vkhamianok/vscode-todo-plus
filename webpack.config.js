@@ -15,10 +15,10 @@ const config = {
     devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]'
   },
   devtool: 'source-map',
-  externals: {
+  externals: [{
     vscode: 'commonjs vscode',
     fsevents: 'commonjs fsevents'
-  },
+  }, /^node:/], // Webpack 4 can't resolve `node:` builtins, leaving them to Node
   node: {
     __dirname: false
   },
