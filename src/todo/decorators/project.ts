@@ -2,6 +2,7 @@
 /* IMPORT */
 
 import * as vscode from 'vscode';
+import DecorationTypes from './decoration_types';
 import Config from '../../config';
 import Consts from '../../consts';
 import Utils from '../../utils';
@@ -10,7 +11,7 @@ import Line from './line';
 
 /* DECORATION TYPES */
 
-const PROJECT_BASIC = vscode.window.createTextEditorDecorationType ({
+const PROJECT_BASIC = DecorationTypes.lazy ( () => vscode.window.createTextEditorDecorationType ({
   color: Consts.colors.project,
   rangeBehavior: vscode.DecorationRangeBehavior.OpenClosed,
   dark: {
@@ -19,9 +20,9 @@ const PROJECT_BASIC = vscode.window.createTextEditorDecorationType ({
   light: {
     color: Consts.colors.light.project
   }
-});
+}) );
 
-const PROJECT_STATISTICS = vscode.window.createTextEditorDecorationType ({
+const PROJECT_STATISTICS = DecorationTypes.lazy ( () => vscode.window.createTextEditorDecorationType ({
   color: Consts.colors.project,
   rangeBehavior: vscode.DecorationRangeBehavior.OpenClosed,
   after: {
@@ -41,13 +42,13 @@ const PROJECT_STATISTICS = vscode.window.createTextEditorDecorationType ({
       color: Consts.colors.light.projectStatistics,
     }
   }
-});
+}) );
 
 /* PROJECT */
 
 class Project extends Line {
 
-  TYPES = [PROJECT_BASIC];
+  TYPES = [PROJECT_BASIC ()];
 
   getItemRanges ( project: ProjectItem, negRange?: vscode.Range | vscode.Range[] ) {
 
@@ -63,7 +64,7 @@ class Project extends Line {
 
     const textEditor = projects.length ? projects[0].textEditor : vscode.window.activeTextEditor;
 
-    textEditor.setDecorations ( PROJECT_STATISTICS, [] );
+    textEditor.setDecorations ( PROJECT_STATISTICS (), [] );
 
     const template = Config.getKey ( 'statistics.project.text' ),
           basicRanges = [],
@@ -98,11 +99,11 @@ class Project extends Line {
 
     return [
       {
-        type: PROJECT_BASIC,
+        type: PROJECT_BASIC (),
         ranges: basicRanges
       },
       {
-        type: PROJECT_STATISTICS,
+        type: PROJECT_STATISTICS (),
         ranges: statisticRanges
       }
     ];

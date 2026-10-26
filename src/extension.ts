@@ -7,6 +7,7 @@ import Config from './config';
 import Consts from './consts';
 import CompletionProvider from './providers/completion';
 import SymbolsProvider from './providers/symbols';
+import DecorationTypes from './todo/decorators/decoration_types';
 import DocumentDecorator from './todo/decorators/document';
 import ChangesDecorator from './todo/decorators/changes';
 import Utils from './utils';
@@ -64,7 +65,13 @@ const activate = function ( context: vscode.ExtensionContext ) {
     vscode.window.onDidChangeActiveTextEditor ( () => DocumentDecorator.update () ),
     vscode.workspace.onDidChangeConfiguration ( Consts.update ),
     vscode.workspace.onDidChangeConfiguration ( () => delete Utils.files.filesData && Utils.embedded.provider && delete Utils.embedded.provider.filesData ),
-    vscode.workspace.onDidChangeConfiguration ( () => DocumentDecorator.update () ),
+    vscode.workspace.onDidChangeConfiguration ( event => {
+      if ( event.affectsConfiguration ( 'todo' ) ) { // Recreating decoration types from the new config, disposing removes the old ones from every editor
+        DecorationTypes.reset ();
+        vscode.window.visibleTextEditors.filter ( editor => editor !== vscode.window.activeTextEditor ).forEach ( editor => DocumentDecorator.update ( editor ) );
+      }
+      DocumentDecorator.update ();
+    }),
     vscode.workspace.onDidChangeConfiguration ( Utils.statistics.tokens.updateDisabledAll ),
     vscode.workspace.onDidChangeTextDocument ( ChangesDecorator.onChanges ),
     vscode.workspace.onDidChangeWorkspaceFolders ( () => Utils.embedded.provider && Utils.embedded.provider.unwatchPaths () ),

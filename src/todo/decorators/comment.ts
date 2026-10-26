@@ -2,13 +2,14 @@
 /* IMPORT */
 
 import * as vscode from 'vscode';
+import DecorationTypes from './decoration_types';
 import Line from './line';
 import CommentItem from '../items/comment';
 import Consts from '../../consts';
 
 /* DECORATION TYPES */
 
-const COMMENT = vscode.window.createTextEditorDecorationType ({
+const COMMENT = DecorationTypes.lazy ( () => vscode.window.createTextEditorDecorationType ({
   color: Consts.colors.comment,
   rangeBehavior: vscode.DecorationRangeBehavior.OpenOpen,
   dark: {
@@ -17,13 +18,13 @@ const COMMENT = vscode.window.createTextEditorDecorationType ({
   light: {
     color: Consts.colors.light.comment
   }
-});
+}) );
 
 /* COMMENT */
 
 class Comment extends Line {
 
-  TYPES = [COMMENT];
+  TYPES = [COMMENT ()];
 
   getItemRanges ( comment: CommentItem, negRange?: vscode.Range | vscode.Range[] ) {
 

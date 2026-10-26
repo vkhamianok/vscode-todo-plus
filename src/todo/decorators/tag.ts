@@ -2,13 +2,14 @@
 /* IMPORT */
 
 import * as vscode from 'vscode';
+import DecorationTypes from './decoration_types';
 import Consts from '../../consts';
 import TagItem from '../items/tag';
 import Line from './line';
 
 /* DECORATION TYPES */
 
-const SPECIAL_TAGS = Consts.tags.names.map ( ( name, index ) => vscode.window.createTextEditorDecorationType ({
+const SPECIAL_TAGS = DecorationTypes.lazy ( () => Consts.tags.names.map ( ( name, index ) => vscode.window.createTextEditorDecorationType ({
   backgroundColor: Consts.colors.tags.background[index],
   color: Consts.colors.tags.foreground[index],
   borderRadius: '2px',
@@ -21,9 +22,9 @@ const SPECIAL_TAGS = Consts.tags.names.map ( ( name, index ) => vscode.window.cr
     backgroundColor: Consts.colors.light.tags.background[index],
     color: Consts.colors.light.tags.foreground[index]
   }
-}));
+})) );
 
-const TAG = vscode.window.createTextEditorDecorationType ({
+const TAG = DecorationTypes.lazy ( () => vscode.window.createTextEditorDecorationType ({
   color: Consts.colors.tag,
   rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
   dark: {
@@ -32,13 +33,13 @@ const TAG = vscode.window.createTextEditorDecorationType ({
   light: {
     color: Consts.colors.light.tag
   }
-});
+}) );
 
 /* TAG */
 
 class Tag extends Line {
 
-  TYPES = [...SPECIAL_TAGS, TAG];
+  TYPES = [...SPECIAL_TAGS (), TAG ()];
 
   getItemRanges ( tag: TagItem ) {
 

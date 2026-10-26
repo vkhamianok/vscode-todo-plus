@@ -2,6 +2,7 @@
 /* IMPORT */
 
 import * as vscode from 'vscode';
+import DecorationTypes from './decoration_types';
 import Config from '../../config';
 import Consts from '../../consts';
 import FormattedItem from '../items/formatted';
@@ -9,7 +10,7 @@ import Line from './line';
 
 /* DECORATION TYPES */
 
-const CODE = vscode.window.createTextEditorDecorationType ({
+const CODE = DecorationTypes.lazy ( () => vscode.window.createTextEditorDecorationType ({
   color: Consts.colors.code,
   rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed,
   dark: {
@@ -18,28 +19,28 @@ const CODE = vscode.window.createTextEditorDecorationType ({
   light: {
     color: Consts.colors.light.code
   }
-});
+}) );
 
-const BOLD = vscode.window.createTextEditorDecorationType ({
+const BOLD = DecorationTypes.lazy ( () => vscode.window.createTextEditorDecorationType ({
   fontWeight: 'bold',
   rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed
-});
+}) );
 
-const ITALIC = vscode.window.createTextEditorDecorationType ({
+const ITALIC = DecorationTypes.lazy ( () => vscode.window.createTextEditorDecorationType ({
   fontStyle: 'oblique',
   rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed
-});
+}) );
 
-const STRIKETHROUGH = vscode.window.createTextEditorDecorationType ({
+const STRIKETHROUGH = DecorationTypes.lazy ( () => vscode.window.createTextEditorDecorationType ({
   textDecoration: 'line-through',
   rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed
-});
+}) );
 
 /* FORMATTED */
 
 class Formatted extends Line {
 
-  TYPES = [CODE, BOLD, ITALIC, STRIKETHROUGH];
+  TYPES = [CODE (), BOLD (), ITALIC (), STRIKETHROUGH ()];
 
   getItemRanges ( formatted: FormattedItem ) {
 

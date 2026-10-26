@@ -2,13 +2,14 @@
 /* IMPORT */
 
 import * as vscode from 'vscode';
+import DecorationTypes from './decoration_types';
 import Consts from '../../consts';
 import TodoCancelledItem from '../items/todo_cancelled';
 import Line from './line';
 
 /* DECORATION TYPES */
 
-const TODO_CANCELLED = vscode.window.createTextEditorDecorationType ({
+const TODO_CANCELLED = DecorationTypes.lazy ( () => vscode.window.createTextEditorDecorationType ({
   color: Consts.colors.cancelled,
   rangeBehavior: vscode.DecorationRangeBehavior.ClosedOpen,
   dark: {
@@ -17,13 +18,13 @@ const TODO_CANCELLED = vscode.window.createTextEditorDecorationType ({
   light: {
     color: Consts.colors.light.cancelled
   }
-});
+}) );
 
 /* TODO CANCELLED */
 
 class TodoCancelled extends Line {
 
-  TYPES = [TODO_CANCELLED];
+  TYPES = [TODO_CANCELLED ()];
 
   getItemRanges ( todoCancelled: TodoCancelledItem, negRange?: vscode.Range | vscode.Range[] ) {
 

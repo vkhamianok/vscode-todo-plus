@@ -2,13 +2,14 @@
 /* IMPORT */
 
 import * as vscode from 'vscode';
+import DecorationTypes from './decoration_types';
 import Consts from '../../consts';
 import TodoDoneItem from '../items/todo_done';
 import Line from './line';
 
 /* DECORATION TYPES */
 
-const TODO_DONE = vscode.window.createTextEditorDecorationType ({
+const TODO_DONE = DecorationTypes.lazy ( () => vscode.window.createTextEditorDecorationType ({
   color: Consts.colors.done,
   rangeBehavior: vscode.DecorationRangeBehavior.ClosedOpen,
   dark: {
@@ -17,13 +18,13 @@ const TODO_DONE = vscode.window.createTextEditorDecorationType ({
   light: {
     color: Consts.colors.light.done
   }
-});
+}) );
 
 /* TODO DONE */
 
 class TodoDone extends Line {
 
-  TYPES = [TODO_DONE];
+  TYPES = [TODO_DONE ()];
 
   getItemRanges ( todoDone: TodoDoneItem, negRange?: vscode.Range | vscode.Range[] ) {
 
