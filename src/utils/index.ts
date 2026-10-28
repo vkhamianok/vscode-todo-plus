@@ -10,6 +10,7 @@ import editor from './editor';
 import embedded from './embedded';
 import file from './file';
 import files from './files';
+import filter from './filter';
 import folder from './folder';
 import init from './init';
 import regex from './regex';
@@ -30,6 +31,7 @@ const Utils = {
   embedded,
   file,
   files,
+  filter,
   folder,
   init,
   regex,

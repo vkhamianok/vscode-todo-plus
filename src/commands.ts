@@ -227,6 +227,32 @@ function viewFilesExpand () {
   ViewFiles.refresh ( true );
 }
 
+async function viewFilesFilter () {
+
+  const filter = await vscode.window.showInputBox ({
+    value: ViewFiles.filter || '',
+    placeHolder: '@now @high, @now,@tomorrow, !@xl, text...',
+    prompt: 'Spaces: all terms must match, commas: any alternative, !: negation, @tag or text'
+  });
+
+  if ( filter === undefined ) return;
+
+  ViewFiles.filter = filter.trim () || false;
+  vscode.commands.executeCommand ( 'setContext', 'todo-files-filtered', !!ViewFiles.filter );
+  ViewFiles.refresh ();
+
+}
+
+const filesFilter = viewFilesFilter;
+
+function viewFilesClearFilter () {
+  ViewFiles.filter = false;
+  vscode.commands.executeCommand ( 'setContext', 'todo-files-filtered', false );
+  ViewFiles.refresh ();
+}
+
+const filesClearFilter = viewFilesClearFilter;
+
 /* VIEW EMBEDDED */
 
 function viewEmbeddedCollapse () {
@@ -283,5 +309,5 @@ function viewEmbeddedShowActiveFile () {
 
 /* EXPORT */
 
-export {open, openEmbedded, toggleBox, toggleDone, toggleCancelled, toggleStart, toggleTimer, archive, viewOpenFile, viewRevealTodo, viewFilesOpen, viewFilesCollapse, viewFilesExpand, viewEmbeddedCollapse, viewEmbeddedExpand, viewEmbeddedFilter, embeddedFilter, viewEmbeddedClearFilter, embeddedClearFilter, viewEmbeddedToggleAllFiles, viewEmbeddedShowAllFiles, viewEmbeddedShowActiveFile};
+export {open, openEmbedded, toggleBox, toggleDone, toggleCancelled, toggleStart, toggleTimer, archive, viewOpenFile, viewRevealTodo, viewFilesOpen, viewFilesCollapse, viewFilesExpand, viewFilesFilter, filesFilter, viewFilesClearFilter, filesClearFilter, viewEmbeddedCollapse, viewEmbeddedExpand, viewEmbeddedFilter, embeddedFilter, viewEmbeddedClearFilter, embeddedClearFilter, viewEmbeddedToggleAllFiles, viewEmbeddedShowAllFiles, viewEmbeddedShowActiveFile};
 export {toggleBox as editorToggleBox, toggleDone as editorToggleDone, toggleCancelled as editorToggleCancelled, toggleStart as editorToggleStart, archive as editorArchive}
