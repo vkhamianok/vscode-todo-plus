@@ -9,6 +9,7 @@ import CompletionProvider from './providers/completion';
 import SymbolsProvider from './providers/symbols';
 import DecorationTypes from './todo/decorators/decoration_types';
 import DocumentDecorator from './todo/decorators/document';
+import EditorFilter from './todo/filter';
 import ChangesDecorator from './todo/decorators/changes';
 import Utils from './utils';
 import ViewEmbedded from './views/embedded';
@@ -78,6 +79,8 @@ const activate = function ( context: vscode.ExtensionContext ) {
     vscode.workspace.onDidChangeWorkspaceFolders ( Utils.files.unwatchPaths ),
     vscode.workspace.onDidChangeWorkspaceFolders ( Utils.folder.initRootsRe )
   );
+
+  EditorFilter.init ( context );
 
   DocumentDecorator.update ();
 

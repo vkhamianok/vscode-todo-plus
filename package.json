@@ -418,6 +418,16 @@
           "description": "Format used for the `[est]`, `[est-total]`, `[est-finished]` and `[est-finished-percentage]` tokens",
           "default": "short-compact"
         },
+        "todo.filter.fold": {
+          "type": "boolean",
+          "description": "Fold away the lines hidden by the filter, besides dimming them",
+          "default": true
+        },
+        "todo.filter.opacity": {
+          "type": "string",
+          "description": "Opacity of the lines hidden by the filter",
+          "default": "0.35"
+        },
         "todo.timer.statusbar.enabled": {
           "type": [
             "boolean",
@@ -670,6 +680,14 @@
         "title": "Todo: Archive"
       },
       {
+        "command": "todo.filter",
+        "title": "Todo: Filter"
+      },
+      {
+        "command": "todo.clearFilter",
+        "title": "Todo: Clear Filter"
+      },
+      {
         "command": "todo.filesFilter",
         "title": "Todo: Files View - Filter"
       },
@@ -808,6 +826,12 @@
     ],
     "keybindings": [
       {
+        "command": "todo.filter",
+        "key": "Ctrl+Alt+f",
+        "mac": "Cmd+Alt+f",
+        "when": "editorTextFocus && editorLangId == todo"
+      },
+      {
         "command": "todo.toggleBox",
         "key": "Ctrl+Enter",
         "mac": "Cmd+Enter",
@@ -877,6 +901,14 @@
         },
         {
           "command": "todo.toggleStart",
+          "when": "editorLangId == todo"
+        },
+        {
+          "command": "todo.filter",
+          "when": "editorLangId == todo"
+        },
+        {
+          "command": "todo.clearFilter",
           "when": "editorLangId == todo"
         },
         {

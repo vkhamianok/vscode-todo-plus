@@ -7,6 +7,7 @@ import * as vscode from 'vscode';
 import Config from './config';
 import Consts from './consts';
 import Document from './todo/document';
+import EditorFilter from './todo/filter';
 import ItemFile from './views/items/item';
 import ItemTodo from './views/items/todo';
 import StatusbarTimer from './statusbars/timer';
@@ -209,6 +210,34 @@ function viewRevealTodo ( todo: ItemTodo ) {
 
 }
 
+/* FILTER */
+
+async function filter () {
+
+  const textEditor = vscode.window.activeTextEditor;
+
+  if ( !textEditor || textEditor.document.languageId !== Consts.languageId ) return;
+
+  const query = await EditorFilter.prompt ( EditorFilter.get ( textEditor.document ) || '' );
+
+  if ( query === undefined ) return;
+
+  if ( query ) EditorFilter.addHistory ( query );
+
+  await EditorFilter.set ( textEditor, query || undefined );
+
+}
+
+async function clearFilter () {
+
+  const textEditor = vscode.window.activeTextEditor;
+
+  if ( !textEditor || !EditorFilter.get ( textEditor.document ) ) return;
+
+  await EditorFilter.set ( textEditor, undefined );
+
+}
+
 /* VIEW FILE */
 
 function viewFilesOpen () {
@@ -309,5 +338,5 @@ function viewEmbeddedShowActiveFile () {
 
 /* EXPORT */
 
-export {open, openEmbedded, toggleBox, toggleDone, toggleCancelled, toggleStart, toggleTimer, archive, viewOpenFile, viewRevealTodo, viewFilesOpen, viewFilesCollapse, viewFilesExpand, viewFilesFilter, filesFilter, viewFilesClearFilter, filesClearFilter, viewEmbeddedCollapse, viewEmbeddedExpand, viewEmbeddedFilter, embeddedFilter, viewEmbeddedClearFilter, embeddedClearFilter, viewEmbeddedToggleAllFiles, viewEmbeddedShowAllFiles, viewEmbeddedShowActiveFile};
+export {open, openEmbedded, toggleBox, toggleDone, toggleCancelled, toggleStart, toggleTimer, archive, filter, clearFilter, viewOpenFile, viewRevealTodo, viewFilesOpen, viewFilesCollapse, viewFilesExpand, viewFilesFilter, filesFilter, viewFilesClearFilter, filesClearFilter, viewEmbeddedCollapse, viewEmbeddedExpand, viewEmbeddedFilter, embeddedFilter, viewEmbeddedClearFilter, embeddedClearFilter, viewEmbeddedToggleAllFiles, viewEmbeddedShowAllFiles, viewEmbeddedShowActiveFile};
 export {toggleBox as editorToggleBox, toggleDone as editorToggleDone, toggleCancelled as editorToggleCancelled, toggleStart as editorToggleStart, archive as editorArchive}
